@@ -24,12 +24,9 @@ function fish_prompt
     echo -n -s $red (hostname|cut -d . -f 1) " "
   else
     # display 'user@host:'
-    echo -n -s $green (whoami) @ $green (hostname|cut -d . -f 1) " "
+    echo -n -s $green (whoami) @ $green (hostname|cut -d . -f 1)
   end
-
-  # display the current directory name:
-  echo -n -s $blue $cwd $normal
-
+  
   # show git branch and dirty state, if applicable:
   if [ (_git_branch_name) ]
     set -l git_branch '[' (_git_branch_name) ']'
@@ -39,8 +36,11 @@ function fish_prompt
     else
       set git_info $cyan $git_branch
     end
-    echo -n -s ' ' $git_info $normal
+    echo -n -s ' ' $git_info $normal " "
   end
+
+  # display the current directory name:
+  echo -n -s $blue $cwd $normal
 
   # terminate with a nice prompt char:
   if [ (id -u) = "0" ];
@@ -48,5 +48,5 @@ function fish_prompt
   else
     set indicate '$'
   end
-  echo -n -s $blue " $indicate " $normal
+  echo -nes $blue "\n$indicate " $normal
 end
